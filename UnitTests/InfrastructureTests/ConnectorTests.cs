@@ -44,6 +44,7 @@ namespace InfrastructureTests
 
             // Assert
             Assert.Equal(responseData, result);
+            Assert.NotEmpty(responseData);
         }
     }
 }
