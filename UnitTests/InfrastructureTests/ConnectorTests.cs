@@ -10,6 +10,7 @@ namespace InfrastructureTests
     public class ConnectorTests
     {
         private const int API_PORT = 62737;
+        private const string ENDPOINT_PATH = "/products";
         private const string PRODUCT_API_URL = "http://localhost:62737/products";
         private readonly IRestClient _restClient;
         private readonly WireMockServer _server;
@@ -29,7 +30,7 @@ namespace InfrastructureTests
             var responseData = $"{DateTime.Now:yyyy-MM-dd} Time: {DateTime.Now:HH:mm:ss}";
             _server
                 .Given(
-                    Request.Create().WithPath("/products").UsingMethod("GET")
+                    Request.Create().WithPath(ENDPOINT_PATH).UsingGet()
                 )
                 .RespondWith(
                     Response.Create()
@@ -39,7 +40,7 @@ namespace InfrastructureTests
                 );
 
             // Act
-            var result = await _test.SendAsync(PRODUCT_API_URL, RestSharp.Method.Get);
+            var result = await _test.SendAsync(PRODUCT_API_URL, Method.Get);
 
             // Assert
             Assert.Equal(responseData, result);
