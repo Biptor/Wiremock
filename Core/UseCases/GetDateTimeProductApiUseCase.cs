@@ -5,6 +5,7 @@ namespace Core.UseCases
 {
     public class GetDateTimeProductApiUseCase : IGetDateTimeProductApiUseCase
     {
+        private const string PRODUCT_API_URL = "http://localhost:62737/products";
         private readonly IConnector _connector;
 
         public GetDateTimeProductApiUseCase(IConnector connector)
@@ -14,7 +15,7 @@ namespace Core.UseCases
 
         public async Task<string?> ExecuteAsync()
         {
-            return await _connector.SendAsync("http://localhost:62737/products", RestSharp.Method.Get) ?? string.Empty;
+            return await _connector.SendAsync(PRODUCT_API_URL, RestSharp.Method.Get) ?? string.Empty;
         }
     }
 }
