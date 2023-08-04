@@ -1,4 +1,4 @@
-namespace ApiWiremock
+namespace ApiWireMock
 {
     public class WeatherForecast
     {

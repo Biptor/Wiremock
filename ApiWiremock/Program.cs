@@ -1,4 +1,6 @@
-namespace ApiWiremock
+using ApiWireMock.Extensions;
+
+namespace ApiWireMock
 {
     public class Program
     {
@@ -12,6 +14,9 @@ namespace ApiWiremock
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            // Add Modules
+            builder.Services.AddCoreModules();
+            builder.Services.AddInfrastructureModules();
 
             var app = builder.Build();
 
