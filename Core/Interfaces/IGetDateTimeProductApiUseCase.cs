@@ -2,6 +2,6 @@
 {
     public interface IGetDateTimeProductApiUseCase
     {
-        Task<string?> ExecuteAsync();
+        Task<string?> ExecuteAsync(string param);
     }
 }
