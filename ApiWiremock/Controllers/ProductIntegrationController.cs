@@ -19,7 +19,7 @@ namespace ApiWireMock.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _getDateTimeProductApiUseCase.ExecuteAsync());
+            return Ok(await _getDateTimeProductApiUseCase.ExecuteAsync("OK"));
         }
     }
 }

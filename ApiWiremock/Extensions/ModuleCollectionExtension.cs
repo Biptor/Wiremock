@@ -1,7 +1,7 @@
-﻿using Core.Interfaces;
+﻿using Core.Domain;
+using Core.Interfaces;
 using Core.UseCases;
 using Infrastructure;
-using Infrastructure.Interfaces;
 using RestSharp;
 
 namespace ApiWireMock.Extensions
@@ -19,8 +19,9 @@ namespace ApiWireMock.Extensions
         public static IServiceCollection AddInfrastructureModules(this IServiceCollection services)
         {
             services.AddSingleton<IRestClient, RestClient>();
-            services.AddSingleton<IConnector, Connector>();
-            
+            services.AddSingleton<Discovery, WatsonConnector>();
+            services.AddSingleton<TicketService, ConnectWiseConnector>();
+
             return services;
         }
     }
