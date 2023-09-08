@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "..\Core\Core.csproj
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTest", "UnitTest", "{6382CABE-D984-422D-8590-13EDABED31F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.UnitTests", "..\UnitTests\Infrastructure.UnitTests\Core.UnitTests.csproj", "{BFDD709A-6811-458D-80D3-B5325BA2DB38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.UnitTests", "..\UnitTests\Infrastructure.UnitTests\Core.UnitTests.csproj", "{BFDD709A-6811-458D-80D3-B5325BA2DB38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfrastructureTests", "..\UnitTests\InfrastructureTests\InfrastructureTests.csproj", "{D989A5A3-4301-41AF-8E53-1D2A9CC64C9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfrastructureTests", "..\UnitTests\InfrastructureTests\InfrastructureTests.csproj", "{D989A5A3-4301-41AF-8E53-1D2A9CC64C9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WireMockSpecFlowTests", "..\WireMockSpecFlowTests\WireMockSpecFlowTests.csproj", "{68052164-7FBD-4967-A75B-6C9EA41A0835}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{D989A5A3-4301-41AF-8E53-1D2A9CC64C9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D989A5A3-4301-41AF-8E53-1D2A9CC64C9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D989A5A3-4301-41AF-8E53-1D2A9CC64C9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68052164-7FBD-4967-A75B-6C9EA41A0835}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68052164-7FBD-4967-A75B-6C9EA41A0835}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68052164-7FBD-4967-A75B-6C9EA41A0835}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68052164-7FBD-4967-A75B-6C9EA41A0835}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{BFDD709A-6811-458D-80D3-B5325BA2DB38} = {6382CABE-D984-422D-8590-13EDABED31F5}
 		{D989A5A3-4301-41AF-8E53-1D2A9CC64C9E} = {6382CABE-D984-422D-8590-13EDABED31F5}
+		{68052164-7FBD-4967-A75B-6C9EA41A0835} = {6382CABE-D984-422D-8590-13EDABED31F5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {31FFB932-2B99-41ED-AD20-EFDE22E81E38}

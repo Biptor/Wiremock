@@ -17,8 +17,8 @@ namespace Core.UnitTests.UseCases
             _test = new GetDateTimeProductApiUseCase(_connector.Object);
         }
 
-        [Fact]
-        public async void ExecuteAsync_Should_Return_Not_Empty_Result()
+        [Test]
+        public async Task ExecuteAsync_Should_Return_Not_Empty_Result()
         {
             // Arrange
             var responseData = $"{DateTime.Now:yyyy-MM-dd} Time: {DateTime.Now:HH:mm:ss}";
@@ -28,7 +28,7 @@ namespace Core.UnitTests.UseCases
             var result = await _test.ExecuteAsync("param");
 
             // Assert
-            Assert.Equal(responseData, result);
+            Assert.AreEqual(responseData, result);
         }
     }
 }

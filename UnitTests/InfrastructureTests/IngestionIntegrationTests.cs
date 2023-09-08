@@ -6,27 +6,33 @@ using WireMock.Server;
 using Core.Domain;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using NUnit.Framework;
+
 
 namespace InfrastructureTests
 {
-    public class ConnectorTests : IDisposable
+    [TestFixture]
+    public class IngestionIntegrationTests
     {
+        // TODO: Configure randon ports
         private const int CONNECTWISE_API_PORT = 62737;
         private const string TICKETS_ENDPOINT_PATH = "/tickets";
         private const string TICKETS_API_URL = "http://localhost:62737/tickets";
 
+        // TODO: Configure randon ports
         private const int WATSON_API_PORT = 62738;
         private const string DISCOVERY_ENDPOINT_PATH = "/discovery";
         private const string DISCOVERY_API_URL = "http://localhost:62738/discovery";
 
-        private readonly IRestClient _restClient;
+        private IRestClient _restClient;
 
-        private readonly IngestionService _ingestionService;
+        private IngestionService _ingestionService;
 
-        private readonly WireMockServer _connectWiseServer;
-        private readonly WireMockServer _watsonServer;
+        private WireMockServer _connectWiseServer;
+        private WireMockServer _watsonServer;
 
-        public ConnectorTests()
+        [SetUp]
+        protected void SetUp()
         {
             var options = new RestClientOptions()
             {
@@ -42,16 +48,18 @@ namespace InfrastructureTests
             _watsonServer = WireMockServer.Start(WATSON_API_PORT, false);
         }
 
-        public void Dispose()
+        [TearDown]
+        public void TearDown()
         {
             _connectWiseServer.Stop();
             _watsonServer.Stop();
         }
 
-        [Fact]
-        public async void SendAsync_Should_Receive_Discovery_Record()
+        [Test]
+        public async Task SendAsync_Should_Receive_Discovery_Record()
         {
-            // Arrange            
+            // Arrange
+            // Given: A simple ticket comming from the Tickets API of ConnectWise
             _connectWiseServer
                 .Given(
                     Request.Create().WithPath(TICKETS_ENDPOINT_PATH).UsingGet()
@@ -60,11 +68,12 @@ namespace InfrastructureTests
                     Response.Create()
                         .WithStatusCode(200)
                         .WithHeader("Content-Type", "application/json")
-                        .WithBody(Newtonsoft.Json.JsonConvert.SerializeObject(
-                            new { Id = "MyId", Name = "My Name", Description = "This is my description" })
+                        .WithBody(JsonConvert.SerializeObject(
+                            new { id = "MyId", name = "My Name", description = "This is my description" })
                         )
                 );
 
+            // And: Watson Discovery is able to receive the ticket
             _watsonServer
                 .Given(
                     Request.Create().WithPath(DISCOVERY_ENDPOINT_PATH).UsingPost()
@@ -75,8 +84,14 @@ namespace InfrastructureTests
                         .WithHeader("Content-Type", "application/json")                        
                 );
 
-            var integration = Integration;
 
+            // Act
+            // When: Run the ingestion service for ConnectWise with service board
+            var integration = Integration;
+            await _ingestionService.Ingest(integration);
+
+            // Assert                    
+            // Then: Recive the simple ticket in Watson Discovery with time entries
             var discoveryRecord = JsonConvert.SerializeObject(new DiscoveryRecord
             {
                 Id = "MyId",
@@ -84,22 +99,17 @@ namespace InfrastructureTests
                 Description = "This is my description"
             }, new JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
 
-            // Act
-            await _ingestionService.Ingest(integration);
-
-            // Assert                    
             var watsonEntries = _watsonServer.FindLogEntries(
                 Request.Create().WithPath(DISCOVERY_ENDPOINT_PATH).UsingPost().WithBody(discoveryRecord)
             );
 
             // https://github.com/WireMock-Net/WireMock.Net/wiki/Stubbing#verify-interactions
             // https://github.com/WireMock-Net/WireMock.Net/wiki/FluentAssertions
-            Assert.NotEmpty(watsonEntries);
+            Assert.IsNotEmpty(watsonEntries);
         }
 
         // We have this new property to hold a valid integration
         private Integration Integration
-            //                 ^^^^^
             => new Integration
             {
                 Id = "4242424242424242",
