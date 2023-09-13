@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using WireMock.Server;
 using Core.Domain;
+using static WireMockSpecFlowTests.Domain.IntegrationTestDataBuilder;
 using Infrastructure;
 using RestSharp;
 using NUnit.Framework;
@@ -74,8 +75,9 @@ namespace WireMockSpecFlowTests.StepDefinitions
         [When(@"Run the ingestion service for ConnectWise with service board")]
         public async Task WhenRunTheIngestionServiceForConnectWiseWithServiceBoard()
         {
-            var integration = Integration;
-            await _ingestionService.Ingest(integration);
+             await _ingestionService.Ingest(
+                AConnectWiseIntegration().WithName("ConnectWiseMR").WithServiceBoard().Build()
+            );
         }
 
         [Then(@"Watson Discovery ingests the simple ticket with time entries")]
@@ -84,7 +86,7 @@ namespace WireMockSpecFlowTests.StepDefinitions
             var discoveryRecord = JsonConvert.SerializeObject(new DiscoveryRecord
             {
                 Id = "MyId",
-                Name = "My NameAny Transformation Rule",
+                Name = "My Name_Any Transformation Rule_ConnectWiseMR",
                 Description = "This is my description"
             }, new JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
 
@@ -97,18 +99,7 @@ namespace WireMockSpecFlowTests.StepDefinitions
             Assert.IsNotEmpty(watsonEntries);
         }
 
-        // TODO: Review this initiation pattern
-        // We have this new property to hold a valid integration
-        private Integration Integration
-            => new Integration
-            {
-                Id = "4242424242424242",
-                Name = "ConnectWiseMR",
-                Description = "This is a ConnectWise Integration"
-            };
-
-
-        static WireMockServer initConnectWise()
+        static WireMockServer InitConnectWise()
         {
             return WireMockServer.Start(new WireMock.Settings.WireMockServerSettings
             {
@@ -117,7 +108,7 @@ namespace WireMockSpecFlowTests.StepDefinitions
             });
         }
 
-        static WireMockServer initWatson()
+        static WireMockServer InitWatson()
         {
             return WireMockServer.Start(new WireMock.Settings.WireMockServerSettings
             {
@@ -130,8 +121,8 @@ namespace WireMockSpecFlowTests.StepDefinitions
         [BeforeFeature]
         public static void StartServers()
         {
-            _connectWiseServer = initConnectWise();
-            _watsonServer = initWatson();
+            _connectWiseServer = InitConnectWise();
+            _watsonServer = InitWatson();
         }
 
         [BeforeScenario("Ingestion")]

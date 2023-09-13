@@ -4,10 +4,10 @@ using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
 using Core.Domain;
+using static WireMockSpecFlowTests.Domain.IntegrationTestDataBuilder;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using NUnit.Framework;
-
+using WireMockSpecFlowTests.Domain;
 
 namespace InfrastructureTests
 {
@@ -48,13 +48,6 @@ namespace InfrastructureTests
             _watsonServer = WireMockServer.Start(WATSON_API_PORT, false);
         }
 
-        [TearDown]
-        public void TearDown()
-        {
-            _connectWiseServer.Stop();
-            _watsonServer.Stop();
-        }
-
         [Test]
         public async Task SendAsync_Should_Receive_Discovery_Record()
         {
@@ -87,15 +80,16 @@ namespace InfrastructureTests
 
             // Act
             // When: Run the ingestion service for ConnectWise with service board
-            var integration = Integration;
-            await _ingestionService.Ingest(integration);
+            await _ingestionService.Ingest(
+                AnIntegration().WithName("ConnectWiseMR").Build()
+            );
 
             // Assert                    
             // Then: Recive the simple ticket in Watson Discovery with time entries
             var discoveryRecord = JsonConvert.SerializeObject(new DiscoveryRecord
             {
                 Id = "MyId",
-                Name = "My NameAny Transformation Rule",
+                Name = "My Name_Any Transformation Rule_ConnectWiseMR",
                 Description = "This is my description"
             }, new JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
 
@@ -108,13 +102,13 @@ namespace InfrastructureTests
             Assert.IsNotEmpty(watsonEntries);
         }
 
-        // We have this new property to hold a valid integration
-        private Integration Integration
-            => new Integration
-            {
-                Id = "4242424242424242",
-                Name = "ConnectWiseMR",
-                Description = "This is a ConnectWise Integration"
-            };
+
+        [TearDown]
+        public void TearDown()
+        {
+            _connectWiseServer.Stop();
+            _watsonServer.Stop();
+        }
+
     }
 }

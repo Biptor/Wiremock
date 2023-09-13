@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Core.Domain
+﻿namespace Core.Domain
 {
     public class Integration
     {
         public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string Source { get; set; }
+        public bool ServiceBoard {  get; set; }
     }
 }

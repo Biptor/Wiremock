@@ -22,7 +22,7 @@
             var discoveryRecord = new DiscoveryRecord
             {
                 Id = ticket?.Id,
-                Name = ticket?.Name + "Any Transformation Rule",
+                Name = ticket?.Name + "_Any Transformation Rule_" + integration.Name,
                 Description = ticket?.Description,
             };
 
