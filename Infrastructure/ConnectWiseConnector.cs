@@ -22,16 +22,5 @@ namespace Infrastructure
 
             return apiResponse.Data;
         }
-
-        public async Task<string?> SendAsync()
-        {
-            var request = new RestRequest(_endpointUrl, Method.Get);
-
-            var apiResponse = await _restClient.ExecuteAsync(request, CancellationToken.None);
-
-            var responseData = apiResponse.Content;
-
-            return responseData;
-        }
     }
 }

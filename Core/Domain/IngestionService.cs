@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Core.Domain
+﻿namespace Core.Domain
 {
     public class IngestionService
     {
@@ -21,15 +15,18 @@ namespace Core.Domain
 
         public async Task Ingest(Integration integration)
         {
+            // Extract
             var ticket = await _ticketService.GetTicket(integration);
 
+            // Transform
             var discoveryRecord = new DiscoveryRecord
             {
                 Id = ticket?.Id,
-                Name = ticket?.Name + "Any Transformation Rule",
+                Name = ticket?.Name + "_Any Transformation Rule_" + integration.Name,
                 Description = ticket?.Description,
             };
 
+            //Load
             await _discovery.Load(discoveryRecord, integration);
 
         }
