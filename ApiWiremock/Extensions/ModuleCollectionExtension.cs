@@ -12,6 +12,7 @@ namespace ApiWireMock.Extensions
         {
             // Use Cases
             services.AddSingleton<IGetDateTimeProductApiUseCase, GetDateTimeProductApiUseCase>();
+            services.AddSingleton<IUploadFileConnectorUseCase, UploadFileConnectorUseCase>();
 
             return services;
         }
@@ -19,8 +20,7 @@ namespace ApiWireMock.Extensions
         public static IServiceCollection AddInfrastructureModules(this IServiceCollection services)
         {
             services.AddSingleton<IRestClient, RestClient>();
-            services.AddSingleton<Discovery, WatsonConnector>();
-            services.AddSingleton<TicketService, ConnectWiseConnector>();
+            services.AddSingleton<IConnector, Connector>();
 
             return services;
         }

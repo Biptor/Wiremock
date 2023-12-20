@@ -9,13 +9,13 @@ namespace ApiWireMock
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            
             // Add Modules
-            builder.Services.AddCoreModules();
             builder.Services.AddInfrastructureModules();
+            builder.Services.AddCoreModules();
 
             var app = builder.Build();
 
